@@ -16,12 +16,12 @@
         <div class="choices">
           <h1>Insira o destino e o peso</h1>
           <p>Destino</p>
-          <select v-model="selectedCity">
+          <select v-model="selectedCity" ref="citySelect">
             <option value="" disabled selected>Selecione uma cidade</option>
             <option v-for="city in transport" :value="city.city" :key="city.id">{{ city.city }}</option>
           </select>
           <p>Peso</p>
-          <input v-model="loadWeight" placeholder="Peso da carga em kg" type="number"/>
+          <input v-model="loadWeight" placeholder="Peso da carga em kg" type="number" ref="weightInput"/>
           <button @click="analyze">Analisar</button>
         </div>
 
@@ -40,7 +40,7 @@
           <div v-if="!showResults">Nenhum dado selecionado</div>
           <div v-else class="painel">
             <p>Estas são as melhores alternativas de frete que encontramos para você</p>
-              <div class="horizontal">git
+              <div class="horizontal">
                 <div class="economic data">
                   <div class="icon">
                     <b-icon-cash-coin></b-icon-cash-coin>
@@ -72,7 +72,7 @@
                   <p>R$ {{this.totalPriceFast}}</p>
                 </div>
               </div>
-              <button>Limpar</button>
+              <button @click="clearResults">Limpar</button>
           </div>
         </div>
       </div>
@@ -184,6 +184,13 @@ export default {
         this.modalShow = true;
       }
     },
+    clearResults() {
+      this.showResults = false;
+      this.selectedCity = '';
+      this.loadWeight = null;
+      this.$refs.citySelect.selectedIndex = 0;
+      this.$refs.weightInput.value = '';
+    }
   }
 }
 </script>
@@ -205,6 +212,8 @@ export default {
   margin-top: 80px;
   width: 80%;
   border-radius: 30px;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
+  padding:0;
 }
 
 .top {
@@ -217,6 +226,7 @@ export default {
   background-color: #89B6C2;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
+  margin: 0;
   width: 100%;
   height: 60px;
   & h1{
