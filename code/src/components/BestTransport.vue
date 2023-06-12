@@ -7,14 +7,12 @@
     </b-navbar>
 
     <div class="container">
-
       <div class="top">
         <img src="/favicon.ico" alt="Ícone" />
         <h1>Melhor Frete</h1>
       </div>
 
       <div class="menu">
-
         <div class="choices">
           <h1>Insira o destino e o peso</h1>
           <p>Destino</p>
@@ -28,13 +26,32 @@
         </div>
 
         <div class="views">
-
+          <b-modal v-model="modalShow" hide-footer hide-header centered>
+            <div class="modal-header">
+              <b-icon-exclamation-square></b-icon-exclamation-square>
+            </div>
+            <div class="modal-body">
+              Insira os valores para realizar a análise.
+            </div>
+            <div class="modal-footer">
+              <b-button @click="modalShow = false">Fechar</b-button>
+            </div>
+          </b-modal>
+          <div v-if="!showResults">Nenhum dado selecionado</div>
+          <div v-else>
+            <p>Estas são as melhores alternativas de frete que encontramos para você</p>
+            <div>
+              <div class="economic"></div>
+              <div class="price"></div>
+            </div>
+            <div>
+              <div class="fast"></div>
+              <div class="price"></div>
+            </div>
+          </div>
         </div>
-
       </div>
-
     </div>
-
   </div>
 
 </template>
@@ -43,13 +60,17 @@
 import {
   BNavbar,
   BNavbarBrand,
+  BModal
 } from 'bootstrap-vue'
 import axios from 'axios'
+import { BIconExclamationSquare } from 'bootstrap-vue'
 
 export default {
   components: {
     BNavbar,
     BNavbarBrand,
+    BModal,
+    BIconExclamationSquare,
   },
   data() {
     const appName = ''
@@ -61,6 +82,11 @@ export default {
       loadWeight: null,
       economicShipping: null,
       fastShipping: null,
+      modalShow: false,
+      showResults: false,
+      totalPriceFast: null,
+      totalPriceEconomic: null,
+
     }
   },
   created() {
@@ -95,7 +121,15 @@ export default {
             const costB = weight <= 100 ? parseFloat(b.cost_transport_light.slice(3)) : parseFloat(b.cost_transport_heavy.slice(3));
             return costA - costB;
           });
+
           this.economicShipping = filteredFreight[0];
+          if(weight<=100){
+            const costEconomicLight = parseFloat(this.economicShipping.cost_transport_light.slice(3))*weight
+            this.totalPriceEconomic = costEconomicLight.toFixed(2);
+          } else if(weight>100){
+            const costEconomicHeavy = parseFloat(this.economicShipping.cost_transport_heavy.slice(3))*weight
+            this.totalPriceEconomic = costEconomicHeavy.toFixed(2);
+          }
 
           filteredFreight.sort((a, b) => {
             const timeA = parseInt(a.lead_time);
@@ -104,13 +138,25 @@ export default {
           });
           
           this.fastShipping = filteredFreight[0];
+          if(weight<=100){
+            const costFastLight = parseFloat(this.fastShipping.cost_transport_light.slice(3))*weight
+            this.totalPriceFast = costFastLight.toFixed(2);
+          } else if(weight>100){
+            const costFastHeavy = parseFloat(this.fastShipping.cost_transport_heavy.slice(3))*weight
+            this.totalPriceFast = costFastHeavy.toFixed(2);
+          }
+
+          this.showResults = true;
         } else {
           this.economicShipping = null;
           this.fastShipping = null;
+          this.showResults = false;
         }
       } else {
         this.economicShipping = null;
         this.fastShipping = null;
+        this.showResults = false;
+        this.modalShow = true;
       }
     },
   }
@@ -220,6 +266,37 @@ export default {
   justify-content: center;
   align-items:center;
   width: 60%;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #343D32;
+  font-size: 60px;
+  border-bottom: none;
+
+}
+
+.modal-body {
+  text-align: center;
+  font-size: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  border-top: none;
+  & button{
+    background-color: #89B6C2;
+    border: none;
+    color: #2E4850;
+    width: 90px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 </style>
