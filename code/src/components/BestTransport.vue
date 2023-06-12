@@ -14,7 +14,10 @@
 
       <div class="menu">
         <div class="choices">
-          <h1>Insira o destino e o peso</h1>
+          <div class="order">
+            <b-icon-map class="map"></b-icon-map>
+            <h1>Insira o destino e o peso</h1>
+          </div>
           <p>Destino</p>
           <select v-model="selectedCity" ref="citySelect">
             <option value="" disabled selected>Selecione uma cidade</option>
@@ -256,20 +259,18 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   padding: 20px;
   background-color: #EEEEEF;
   border-radius: 15px;
   width: 40%;
   height: 90%;
-  & h1{
-    margin-bottom: 20px;
-    color: #2E4850;
-  }
+  padding-left: 45px;
   & p{
     font-size: 15px;
     color: #2E4850;
     font-weight: bold;
+    margin: 0;
   }
   & select, input{
     width: 80%;
@@ -289,6 +290,8 @@ export default {
     width: 90px;
     height: 30px;
     color: #2E4850;
+    margin-left: 90px;
+    margin-top: 15px;
   }
   & option{
     border: none;
@@ -460,6 +463,23 @@ export default {
   align-items: center;
   gap: 15px;
   width: 100%;
+}
+
+.order{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 0;
+  margin-bottom: 20px;
+  & .map{
+    font-size: 25px;
+  }
+  & h1{
+    color: #2E4850;
+  }
+
 }
 
 </style>
