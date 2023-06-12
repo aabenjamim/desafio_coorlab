@@ -38,16 +38,41 @@
             </div>
           </b-modal>
           <div v-if="!showResults">Nenhum dado selecionado</div>
-          <div v-else>
+          <div v-else class="painel">
             <p>Estas são as melhores alternativas de frete que encontramos para você</p>
-            <div>
-              <div class="economic"></div>
-              <div class="price"></div>
-            </div>
-            <div>
-              <div class="fast"></div>
-              <div class="price"></div>
-            </div>
+              <div class="horizontal">git
+                <div class="economic data">
+                  <div class="icon">
+                    <b-icon-cash-coin></b-icon-cash-coin>
+                  </div>
+                  <div class="inform">
+                    <h1>Frete com menor valor</h1>
+                    <p>Trasportadora: {{this.economicShipping.name}}</p>
+                    <p>Tempo estimado: {{this.economicShipping.lead_time}}</p>
+                  </div>
+                </div>
+                <div class="price-economic">
+                  <h1>Preço</h1>
+                  <p>R$ {{this.totalPriceEconomic}}</p>
+                </div>
+              </div>
+              <div class="horizontal">
+                <div class="fast data">
+                  <div class="icon">
+                    <b-icon-clock></b-icon-clock>
+                  </div>
+                  <div class="inform">
+                    <h1>Frete mais rápido</h1>
+                    <p>Trasportadora: {{this.fastShipping.name}}</p>
+                    <p>Tempo estimado: {{this.fastShipping.lead_time}}</p>
+                  </div>
+                </div>
+                <div class="price-fast">
+                  <h1>Preço</h1>
+                  <p>R$ {{this.totalPriceFast}}</p>
+                </div>
+              </div>
+              <button>Limpar</button>
           </div>
         </div>
       </div>
@@ -266,6 +291,9 @@ export default {
   justify-content: center;
   align-items:center;
   width: 60%;
+  padding: 30px;
+  gap: 15px;
+  position: relative;
 }
 
 .modal-header {
@@ -297,6 +325,131 @@ export default {
     align-items: center;
     justify-content: center;
   }
+}
+
+.data{
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  height: 80px;
+  align-items: center;
+  border-radius: 8px;
+    & .icon{
+    width: 25%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+    color: #343D32;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  & .inform{
+    display: flex;
+    width: 75%;
+    height: 100%;
+    padding: 5px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    & h1{
+      font-weight: bold;
+      font-size: 13px;
+    }
+    & p{
+      font-size: 13px;
+    }
+  }
+}
+
+.inform h1, .inform p {
+  margin: 0;
+}
+
+.economic{
+  background-color: #D6DADA;
+  & .icon{
+    background-color: #BACEDA;
+  }
+}
+
+.fast{
+  background-color: #F3F3F0;
+  & .icon{
+    background-color: #8BB7C2;
+  }
+}
+
+.price-economic{
+  width: 30%;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  background-color: #D6DADA;
+  border-radius: 8px;
+  padding: 8px;
+  & h1{
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0;
+  }
+  & p{
+    font-size: 16px;
+    margin: 0;
+  }
+}
+
+.price-fast{
+  width: 30%;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: #F3F3F0;
+  padding: 8px;
+  & h1{
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0;
+  }
+  & p{
+    font-size: 16px;
+    margin: 0;
+  }
+}
+
+.painel{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  & button{
+    background-color: #89B6C2;
+    border: none;
+    color: #2E4850;
+    width: 90px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    position: absolute;
+    bottom: -25px;
+    right: 40px;
+  }
+}
+
+.horizontal{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
 }
 
 </style>
